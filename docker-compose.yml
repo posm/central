@@ -26,6 +26,7 @@ services:
       - mail
     volumes:
       - /data/transfer:/data/transfer
+      - ./server/lib:/usr/odk/lib
     environment:
       - DOMAIN=${DOMAIN}
     command: [ "./wait-for-it.sh", "postgres:5432", "--", "./start-odk.sh" ]
