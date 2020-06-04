@@ -16,6 +16,9 @@ services:
       - ./files/dkim/rsa.private:/etc/exim4/domain.key:ro
     environment:
       - MAILNAME=${DOMAIN}
+  pyxform:
+    container_name: pyxform
+    image: 'yanokwa/pyxform-http:v0.3.0'
   service:
     container_name: service
     build:
@@ -24,11 +27,13 @@ services:
     depends_on:
       - postgres
       - mail
+      - pyxform
     volumes:
       - /data/transfer:/data/transfer
       - ./server/lib:/usr/odk/lib
     environment:
       - DOMAIN=${DOMAIN}
+      - DOMAIN_PROTOCOL=${DOMAIN_PROTOCOL:-https}
     command: [ "./wait-for-it.sh", "postgres:5432", "--", "./start-odk.sh" ]
     ports:
       - "8383:8383"
@@ -41,9 +46,6 @@ services:
       - "3383:3383"
     depends_on:
       - service
-  pyxform:
-    container_name: pyxform
-    image: 'yanokwa/pyxform-http:v0.3.0'
 volumes:
   transfer:
   db-data:

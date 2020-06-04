@@ -19,7 +19,7 @@
       "port": 80
     },
     "env": {
-      "domain": "https://${DOMAIN}"
+      "domain": "${DOMAIN_PROTOCOL}://${DOMAIN}"
     },
     "external": {
       "sentry": {
